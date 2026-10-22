@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn, type Relation } from "typeorm";
 import { Student } from "../../students/entities/student.entity.js";
 
 @Entity("parents")
@@ -20,6 +20,7 @@ export class Parent {
     @Column({ nullable: false })
     identity_number: string
 
-    @OneToMany(() => Student, (student) => student.parent)
-    students: Student[]
+    @OneToOne(() => Student, (student) => student.parent)
+    student: Relation<Student>;
+
 }

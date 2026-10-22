@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, type Relation  } from "typeorm";
 import { Parent } from "../../parents/entities/parent.entity.js";
 
 @Entity("students")
@@ -25,8 +25,11 @@ export class Student {
     @Column({ nullable: false })
     identityNumber: string
 
-    @ManyToOne(() => Parent, (parent) => parent.students)
-    parent: Parent
+    @OneToOne(() => Parent, (parent) => parent.student, { onDelete: 'SET NULL' })
+    @JoinColumn({ name: 'parent_id' })
+    parent: Relation<Parent>;
 
+    @Column({ nullable: true })
+    parent_id: string;
 
 }

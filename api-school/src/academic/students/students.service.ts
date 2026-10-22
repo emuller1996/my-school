@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateStudentDto } from './dto/create-student.dto.js';
 import { UpdateStudentDto } from './dto/update-student.dto.js';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Student } from './entities/student.entity.js';
 import { ILike, Like, Repository } from 'typeorm';
+import { log } from 'console';
 
 @Injectable()
 export class StudentsService {
@@ -20,21 +21,38 @@ export class StudentsService {
   }
 
   async findAll(name?: string) {
-    console.log(name);
-    
-    const students = await this.studentRepository.find({where: { name: Like(`%${name}%`) }})
-    console.log(students);
+    const whereCondition =
+      name && name.trim() !== ''
+        ? { name: Like(`%${name.trim()}%`) }
+        : {};
+
+    const students = await this.studentRepository.find({
+      where: whereCondition,
+    });
+
     return students;
   }
 
   async findOne(id: string) {
-    const student = await this.studentRepository.findBy({id:id})
-    console.log(student);
+    const student = await this.studentRepository.findOne({ where: { id } });
+
+    if (!student) {
+      throw new NotFoundException(`Estudiante con id ${id} no encontrado`);
+    }
+
     return student;
   }
 
-  update(id: number, updateStudentDto: UpdateStudentDto) {
-    return `This action updates a #${id} student`;
+  async update(id: string, updateStudentDto: UpdateStudentDto) {
+    // Busca el estudiante (lanza 404 si no existe)
+    const student = await this.findOne(id);
+
+    // Mezcla los cambios del DTO con la entidad existente
+    const updated = this.studentRepository.merge(student, updateStudentDto);
+
+    const result = await this.studentRepository.save(updated);
+
+    return { message: 'Estudiante actualizado con éxito.', data: result };
   }
 
   remove(id: number) {

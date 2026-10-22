@@ -3,6 +3,6 @@ export class CreateStudentDto {
     name:string
     note:string
     birthdate:string
-    type_identity_document:string
-    identity_number:string    
+    typeIdentityDocument:string
+    identityNumber:string    
 }
