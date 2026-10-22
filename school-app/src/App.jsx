@@ -5,6 +5,7 @@ import Students from './modules/students/pages';
 import Teachers from './modules/teachers/pages';
 import Dashboard from './modules/dashboard/pages';
 import { Route, Routes } from 'react-router-dom';
+import StudenDetailsPage from './modules/students/pages/StudenDetailsPage';
 
 function App() {
 
@@ -20,6 +21,7 @@ function App() {
 
         {/* Rutas hijas */}
         <Route path="students" element={<Students />} />
+        <Route path="students/:id" element={<StudenDetailsPage />} />
         <Route path="teachers" element={<Teachers />} />
       </Route>
     </Routes>
