@@ -17,12 +17,12 @@ export default function Sidebar({ open, onClose }) {
             {/* Sidebar */}
             <aside
                 className={`
-          fixed top-0 left-0 h-full w-72 z-50
-          transform transition-transform duration-300 ease-in-out
-          ${open ? 'translate-x-0' : '-translate-x-full'}
-          lg:translate-x-0 lg:static lg:z-auto
-          flex flex-col
-        `}
+    fixed top-0 left-0 h-screen w-72 z-50
+    transform transition-transform duration-300 ease-in-out
+    ${open ? 'translate-x-0' : '-translate-x-full'}
+    lg:sticky lg:top-0 lg:translate-x-0 lg:z-auto lg:h-screen
+    flex flex-col shrink-0
+  `}
             >
                 {/* Panel con efecto glass */}
                 <div className="m-3 flex-1 flex flex-col rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 shadow-2xl overflow-hidden">
