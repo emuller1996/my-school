@@ -6,6 +6,8 @@ import Tabs from '../../../../components/Tabs';
 const TABS = [
   { id: 'basic', label: 'Información básica', icon: 'fa-solid fa-id-card' },
   { id: 'guardian', label: 'Acudiente', icon: 'fa-solid fa-user-shield' },
+  { id: 'registrations', label: 'Matriculas', icon: 'fa-solid fa-file-circle-plus' },
+
 ];
 
 // Etiqueta legible para el tipo de documento
@@ -70,6 +72,8 @@ export default function StudenDetailsPage() {
       <div className="rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 shadow-xl p-6">
         {activeTab === 'basic' && <BasicInfo student={student} />}
         {activeTab === 'guardian' && <GuardianInfo student={student} />}
+        {activeTab === 'registrations' && (<>ss</>)}
+
       </div>
     </div>
   );
