@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import useStudent from '../../hooks/useStudent';
 import Tabs from '../../../../components/Tabs';
+import FormGuardian from '../../components/FormGuardian';
 
 const TABS = [
   { id: 'basic', label: 'Información básica', icon: 'fa-solid fa-id-card' },
@@ -24,7 +25,7 @@ const DOC_LABELS = {
 export default function StudenDetailsPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { student, loading, error } = useStudent(id);
+  const { student, loading, error, refetch } = useStudent(id);
   const [activeTab, setActiveTab] = useState('basic');
 
   if (loading) {
@@ -71,7 +72,7 @@ export default function StudenDetailsPage() {
       {/* Contenido */}
       <div className="rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 shadow-xl p-6">
         {activeTab === 'basic' && <BasicInfo student={student} />}
-        {activeTab === 'guardian' && <GuardianInfo student={student} />}
+        {activeTab === 'guardian' && <GuardianInfo student={student} onSaved={refetch} />}
         {activeTab === 'registrations' && (<>ss</>)}
 
       </div>
@@ -122,10 +123,17 @@ function BasicInfo({ student }) {
 }
 
 /* ---------- Tab: Acudiente ---------- */
-function GuardianInfo({ student }) {
-  const guardian = student.guardian || {}; // asumiendo que tu API lo devuelve como objeto anidado
+function GuardianInfo({ student, onSaved }) {
+  const guardian = student.parent || {}; // relación Student -> Parent que devuelve GET /students/:id
+  const [showForm, setShowForm] = useState(false);
 
   const fields = [
+    {
+      label: 'Documento',
+      value: guardian.identity_number &&
+        `${DOC_LABELS[guardian.type_identity_document] || guardian.type_identity_document} ${guardian.identity_number}`,
+      icon: 'fa-solid fa-id-card',
+    },
     { label: 'Nombre del acudiente', value: guardian.name, icon: 'fa-solid fa-user' },
     { label: 'Parentesco', value: guardian.relationship, icon: 'fa-solid fa-people-roof' },
     { label: 'Teléfono', value: guardian.phone, icon: 'fa-solid fa-phone' },
@@ -134,18 +142,52 @@ function GuardianInfo({ student }) {
     { label: 'Ocupación', value: guardian.occupation, icon: 'fa-solid fa-briefcase' },
   ];
 
-  const hasData = fields.some((f) => f.value);
+  const hasData = !!student.parent;
+
+  if (showForm) {
+    return (
+      <FormGuardian
+        studentId={student.id}
+        guardian={student.parent}
+        onCancel={() => setShowForm(false)}
+        onSuccess={() => {
+          setShowForm(false);
+          onSaved?.();
+        }}
+      />
+    );
+  }
 
   if (!hasData) {
     return (
       <div className="text-center py-10">
         <i className="fa-solid fa-user-shield text-3xl block mb-2 text-yellow-300/60"></i>
-        <p className="text-white/60 text-sm">Este estudiante no tiene acudiente registrado.</p>
+        <p className="text-white/60 text-sm mb-4">Este estudiante no tiene acudiente registrado.</p>
+        <button
+          onClick={() => setShowForm(true)}
+          className="px-5 py-2.5 rounded-xl bg-gradient-to-br from-yellow-400 to-amber-500
+                     hover:from-yellow-300 hover:to-amber-400 text-emerald-900 text-sm font-bold
+                     shadow-lg transition"
+        >
+          <i className="fa-solid fa-plus mr-2"></i>
+          Agregar acudiente
+        </button>
       </div>
     );
   }
 
   return (
+    <div className="space-y-4">
+    <div className="flex justify-end">
+      <button
+        onClick={() => setShowForm(true)}
+        className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-sm font-medium
+                   border border-white/20 transition"
+      >
+        <i className="fa-solid fa-user-pen mr-2"></i>
+        Editar acudiente
+      </button>
+    </div>
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
       {fields.map(
         (f) =>
@@ -164,6 +206,7 @@ function GuardianInfo({ student }) {
             </div>
           )
       )}
+    </div>
     </div>
   );
 }

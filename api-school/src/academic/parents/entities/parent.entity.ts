@@ -20,6 +20,18 @@ export class Parent {
     @Column({ nullable: false })
     identity_number: string
 
+    @Column({ nullable: true })
+    phone: string
+
+    @Column({ nullable: true })
+    email: string
+
+    @Column({ nullable: true })
+    address: string
+
+    @Column({ nullable: true })
+    occupation: string
+
     @OneToOne(() => Student, (student) => student.parent)
     student: Relation<Student>;
 
