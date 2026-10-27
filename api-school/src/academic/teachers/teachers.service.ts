@@ -1,6 +1,6 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Like, Not, Repository } from 'typeorm';
+import { Brackets, Not, Repository } from 'typeorm';
 import { CreateTeacherDto } from './dto/create-teacher.dto.js';
 import { UpdateTeacherDto } from './dto/update-teacher.dto.js';
 import { Teacher } from './entities/teacher.entity.js';
@@ -21,20 +21,29 @@ export class TeachersService {
     return { message: 'Se creo el profesor con exito.', data: result };
   }
 
-  async findAll(name?: string) {
-    // Busca coincidencias en nombre o apellido (MySQL ya compara sin distinguir mayúsculas)
-    const whereCondition =
-      name && name.trim() !== ''
-        ? [
-          { firstName: Like(`%${name.trim()}%`) },
-          { lastName: Like(`%${name.trim()}%`) },
-        ]
-        : {};
+  async findAll(search?: string) {
+    const query = this.teacherRepository
+      .createQueryBuilder('teacher')
+      .orderBy('teacher.lastName', 'ASC')
+      .addOrderBy('teacher.firstName', 'ASC');
 
-    return this.teacherRepository.find({
-      where: whereCondition,
-      order: { lastName: 'ASC', firstName: 'ASC' },
-    });
+    const term = search?.trim();
+    if (term) {
+      // Escapa los comodines de LIKE para que '%' y '_' se busquen literalmente
+      const like = `%${term.replace(/[\\%_]/g, '\\$&')}%`;
+
+      // Nombre completo (permite "Laura Mart"), documento o teléfono.
+      // MySQL compara sin distinguir mayúsculas con la collation por defecto.
+      query.where(
+        new Brackets((qb) => {
+          qb.where("CONCAT(teacher.firstName, ' ', teacher.lastName) LIKE :like", { like })
+            .orWhere('teacher.identityNumber LIKE :like', { like })
+            .orWhere('teacher.phone LIKE :like', { like });
+        }),
+      );
+    }
+
+    return query.getMany();
   }
 
   async findOne(id: string) {
