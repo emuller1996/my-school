@@ -7,10 +7,13 @@ import { Student } from './academic/students/entities/student.entity.js';
 import { Parent } from './academic/parents/entities/parent.entity.js';
 import { Teacher } from './academic/teachers/entities/teacher.entity.js';
 import { TeachersModule } from './academic/teachers/teachers.module.js';
+import { Classroom } from './academic/classrooms/entities/classroom.entity.js';
+import { ClassroomsModule } from './academic/classrooms/classrooms.module.js';
 
 @Module({
   imports: [AcademicModule,
     TeachersModule,
+    ClassroomsModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',
@@ -18,7 +21,7 @@ import { TeachersModule } from './academic/teachers/teachers.module.js';
       username: 'nestuser',
       password: 'nestpassword',
       database: 'nestdb',
-      entities: [Student, Parent, Teacher],
+      entities: [Student, Parent, Teacher, Classroom],
       // Registra también las entidades declaradas con TypeOrmModule.forFeature()
       autoLoadEntities: true,
       synchronize: true,
