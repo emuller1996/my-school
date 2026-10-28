@@ -17,8 +17,9 @@ export class EnrollmentsController {
     @Query('academicYear', new ParseIntPipe({ optional: true })) academicYear?: number,
     @Query('grade') grade?: string,
     @Query('status') status?: string,
+    @Query('student_id', new ParseUUIDPipe({ optional: true })) studentId?: string,
   ) {
-    return this.enrollmentsService.findAll(academicYear, grade, status);
+    return this.enrollmentsService.findAll(academicYear, grade, status, studentId);
   }
 
   @Get(':id')

@@ -5,6 +5,7 @@ import Teachers from './modules/teachers/pages';
 import Dashboard from './modules/dashboard/pages';
 import { Route, Routes } from 'react-router-dom';
 import StudenDetailsPage from './modules/students/pages/StudenDetailsPage';
+import Enrollments from './modules/enrollments/pages';
 
 function App() {
 
@@ -22,6 +23,7 @@ function App() {
         <Route path="students" element={<Students />} />
         <Route path="students/:id" element={<StudenDetailsPage />} />
         <Route path="teachers" element={<Teachers />} />
+        <Route path="enrollments" element={<Enrollments />} />
       </Route>
     </Routes>
 

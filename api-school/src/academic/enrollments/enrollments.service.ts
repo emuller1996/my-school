@@ -29,9 +29,10 @@ export class EnrollmentsService {
     return { message: 'Matrícula creada con éxito.', data: await this.findOne(saved.id) };
   }
 
-  async findAll(academicYear?: number, grade?: string, status?: string) {
+  async findAll(academicYear?: number, grade?: string, status?: string, studentId?: string) {
     const where: FindOptionsWhere<Enrollment> = {};
     if (academicYear !== undefined) where.academicYear = academicYear;
+    if (studentId) where.student_id = studentId;
     if (grade) where.grade = grade as EnrollmentGrade;
     if (status) where.status = status as EnrollmentStatus;
 
