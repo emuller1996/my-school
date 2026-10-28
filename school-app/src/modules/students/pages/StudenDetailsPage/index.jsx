@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import useStudent from '../../hooks/useStudent';
 import Tabs from '../../../../components/Tabs';
 import FormGuardian from '../../components/FormGuardian';
+import StudentEnrollments from '../../../enrollments/components/StudentEnrollments';
 
 const TABS = [
   { id: 'basic', label: 'Información básica', icon: 'fa-solid fa-id-card' },
@@ -73,7 +74,7 @@ export default function StudenDetailsPage() {
       <div className="rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 shadow-xl p-6">
         {activeTab === 'basic' && <BasicInfo student={student} />}
         {activeTab === 'guardian' && <GuardianInfo student={student} onSaved={refetch} />}
-        {activeTab === 'registrations' && (<>ss</>)}
+        {activeTab === 'registrations' && <StudentEnrollments student={student} />}
 
       </div>
     </div>

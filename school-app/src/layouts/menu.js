@@ -13,6 +13,7 @@ export const menuItems = [
         children: [
             { id: 'students', label: 'Estudiantes', to:"students",  icon: 'fa-solid fa-user-graduate' },
             { id: 'teachers', label: 'Profesores', to:"teachers", icon: 'fa-solid fa-chalkboard-user' },
+            { id: 'enrollments', label: 'Matrículas', to:"enrollments", icon: 'fa-solid fa-file-signature' },
         ],
     },
     {
