@@ -3,8 +3,7 @@ import { CreateStudentDto } from './dto/create-student.dto.js';
 import { UpdateStudentDto } from './dto/update-student.dto.js';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Student } from './entities/student.entity.js';
-import { ILike, Like, Repository } from 'typeorm';
-import { log } from 'console';
+import { Brackets, Repository } from 'typeorm';
 
 @Injectable()
 export class StudentsService {
@@ -20,17 +19,27 @@ export class StudentsService {
     return { message: "Se creo el estudiante con exito.", data: studentResult };
   }
 
-  async findAll(name?: string) {
-    const whereCondition =
-      name && name.trim() !== ''
-        ? { name: Like(`%${name.trim()}%`) }
-        : {};
+  async findAll(search?: string) {
+    const query = this.studentRepository
+      .createQueryBuilder('student')
+      .orderBy('student.name', 'ASC');
 
-    const students = await this.studentRepository.find({
-      where: whereCondition,
-    });
+    const term = search?.trim();
+    if (term) {
+      // Escapa los comodines de LIKE para que '%' y '_' se busquen literalmente
+      const like = `%${term.replace(/[\\%_]/g, '\\$&')}%`;
 
-    return students;
+      // Nombre, código o número de documento (MySQL compara sin distinguir mayúsculas)
+      query.where(
+        new Brackets((qb) => {
+          qb.where('student.name LIKE :like', { like })
+            .orWhere('student.code LIKE :like', { like })
+            .orWhere('student.identityNumber LIKE :like', { like });
+        }),
+      );
+    }
+
+    return query.getMany();
   }
 
   async findOne(id: string) {

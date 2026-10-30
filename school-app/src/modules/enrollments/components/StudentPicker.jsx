@@ -18,7 +18,7 @@ export default function StudentPicker({ value, onChange, disabled = false, hasEr
       try {
         const term = query.trim();
         const { data } = await api.get('/students', {
-          params: term ? { name: term } : {},
+          params: term ? { search: term } : {},
           signal: controller.signal,
         });
         setResults((Array.isArray(data) ? data : data.data || []).slice(0, 8));
@@ -91,7 +91,7 @@ export default function StudentPicker({ value, onChange, disabled = false, hasEr
           setQuery(e.target.value);
           setOpen(true);
         }}
-        placeholder="Buscar estudiante por nombre..."
+        placeholder="Buscar por nombre, código o documento..."
         className={`w-full pl-10 pr-4 py-2.5 rounded-xl bg-white/10 border text-white placeholder-white/40
           focus:outline-none focus:ring-2 focus:ring-yellow-300/60 transition
           ${hasError ? 'border-red-400/70' : 'border-white/20'}`}

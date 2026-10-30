@@ -13,8 +13,9 @@ export class StudentsController {
   }
 
   @Get()
-  findAll(@Query("name") name?:string ) {
-    return this.studentsService.findAll(name);
+  findAll(@Query("search") search?: string, @Query("name") name?: string) {
+    // `search` busca por nombre, código o documento; `name` se mantiene por compatibilidad
+    return this.studentsService.findAll(search ?? name);
   }
 
   @Get(':id')
