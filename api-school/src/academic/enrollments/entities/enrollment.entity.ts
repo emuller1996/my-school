@@ -1,5 +1,6 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn, type Relation } from "typeorm";
 import { Student } from "../../students/entities/student.entity.js";
+import { ClassGroup } from "../../class-group/entities/class-group.entity.js";
 
 export const ENROLLMENT_GRADES = [
     "primero", "segundo", "tercero", "cuarto", "quinto", "sexto",
@@ -43,5 +44,13 @@ export class Enrollment {
 
     @UpdateDateColumn()
     updatedAt: Date;
+
+    @ManyToOne(() => ClassGroup, (a) => a.enrollments, { onDelete: 'CASCADE' })
+    @JoinColumn({ name: 'classgroup_id' })
+    classgroup: Relation<ClassGroup>;
+
+    // 👇 FK expuesta como columna (opcional pero recomendado)
+    @Column({ nullable: true })
+    classgroup_id: string;
 
 }

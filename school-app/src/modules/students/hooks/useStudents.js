@@ -11,7 +11,7 @@ export default function useStudents() {
     setError(null);
     try {
       const { data } = await api.get('/students', {
-        params: search ? { name: search } : {},
+        params: search ? { search } : {},
       });
       setStudents(Array.isArray(data) ? data : data.data || []);
     } catch (err) {
