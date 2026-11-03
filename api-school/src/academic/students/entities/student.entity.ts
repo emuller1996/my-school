@@ -1,35 +1,50 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, type Relation  } from "typeorm";
-import { Parent } from "../../parents/entities/parent.entity.js";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+  type Relation,
+} from 'typeorm';
+import { Parent } from '../../parents/entities/parent.entity.js';
+import { ClassGroup } from '../../class-group/entities/class-group.entity.js';
 
-@Entity("students")
+@Entity('students')
 export class Student {
+  @PrimaryGeneratedColumn('uuid') // 👈 Genera automáticamente el UUID
+  id: string;
 
-    @PrimaryGeneratedColumn('uuid') // 👈 Genera automáticamente el UUID
-    id: string;
+  @Column()
+  code: string;
 
-    @Column()
-    code: string;
+  @Column()
+  name: string;
 
-    @Column()
-    name: string;
+  @Column()
+  note: string;
 
-    @Column()
-    note: string;
+  @Column({ type: 'date' })
+  birthdate: Date;
 
-    @Column({ type: "date" })
-    birthdate: Date;
+  @Column({ type: 'enum', enum: ['CC', 'TI', 'RC', 'PP'], nullable: false })
+  typeIdentityDocument: string;
 
-    @Column({ type: "enum", enum: ["CC", "TI", "RC", "PP"], nullable: false })
-    typeIdentityDocument: string
+  @Column({ nullable: false })
+  identityNumber: string;
 
-    @Column({ nullable: false })
-    identityNumber: string
+  @OneToOne(() => Parent, (parent) => parent.student, { onDelete: 'SET NULL' })
+  @JoinColumn({ name: 'parent_id' })
+  parent: Relation<Parent>;
 
-    @OneToOne(() => Parent, (parent) => parent.student, { onDelete: 'SET NULL' })
-    @JoinColumn({ name: 'parent_id' })
-    parent: Relation<Parent>;
+  @Column({ nullable: true })
+  parent_id: string;
 
-    @Column({ nullable: true })
-    parent_id: string;
+  @CreateDateColumn()
+  createdAt: Date;
 
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

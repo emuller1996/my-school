@@ -50,15 +50,15 @@ export default function Students() {
       <div className="flex flex-col sm:flex-row sm:items-center gap-3 justify-between">
         <h3 className="text-white font-semibold text-xl">Listado de Estudiantes</h3>
 
-        <div className="flex items-center gap-3">
+        <div className="flex md:flex-row flex-col items-center gap-3">
           <div className="relative">
             <i className="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-yellow-300 text-xs"></i>
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Buscar por nombre..."
-              className="w-56 pl-9 pr-9 py-2 rounded-xl bg-white/10 border border-white/20
+              placeholder="Nombre, código o documento..."
+              className="w-full md:w-100 pl-9 pr-9 py-2 rounded-xl bg-white/10 border border-white/20
                          text-white placeholder-white/40 text-sm
                          focus:outline-none focus:ring-2 focus:ring-yellow-300/60 transition"
             />
@@ -101,7 +101,7 @@ export default function Students() {
         ) : students.length === 0 ? (
           <p className="text-white/60 text-sm text-center py-8">
             <i className="fa-solid fa-inbox text-3xl block mb-2 text-yellow-300/60"></i>
-            {search ? 'No se encontraron estudiantes con ese nombre' : 'No hay estudiantes registrados aún'}
+            {search ? 'No se encontraron estudiantes con ese criterio' : 'No hay estudiantes registrados aún'}
           </p>
         ) : (
           <table className="w-full text-sm">
