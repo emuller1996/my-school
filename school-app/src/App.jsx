@@ -6,6 +6,7 @@ import Dashboard from './modules/dashboard/pages';
 import { Route, Routes } from 'react-router-dom';
 import StudenDetailsPage from './modules/students/pages/StudenDetailsPage';
 import Enrollments from './modules/enrollments/pages';
+import ClassGroups from './modules/classgroup/pages';
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
         <Route path="students/:id" element={<StudenDetailsPage />} />
         <Route path="teachers" element={<Teachers />} />
         <Route path="enrollments" element={<Enrollments />} />
+        <Route path="class-groups" element={<ClassGroups />} />
       </Route>
     </Routes>
 
