@@ -82,7 +82,7 @@ export default function Sidebar({ open, onClose }) {
                                     {/* Submenú */}
                                     {hasChildren && (
                                         <div
-                                            className={`overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? 'max-h-40 opacity-100 mt-1' : 'max-h-0 opacity-0'
+                                            className={`transition-all duration-300 ease-in-out ${isOpen ? 'max-h-48 opacity-100 mt-1' : 'max-h-0 opacity-0'
                                                 }`}
                                         >
                                             <div className="ml-4 pl-3 border-l border-yellow-400/40 space-y-1">

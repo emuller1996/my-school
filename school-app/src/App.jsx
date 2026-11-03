@@ -7,6 +7,7 @@ import { Route, Routes } from 'react-router-dom';
 import StudenDetailsPage from './modules/students/pages/StudenDetailsPage';
 import Enrollments from './modules/enrollments/pages';
 import ClassGroups from './modules/classgroup/pages';
+import Classrooms from './modules/classroom/pages';
 
 function App() {
 
@@ -26,6 +27,7 @@ function App() {
         <Route path="teachers" element={<Teachers />} />
         <Route path="enrollments" element={<Enrollments />} />
         <Route path="class-groups" element={<ClassGroups />} />
+        <Route path="classrooms" element={<Classrooms />} />
       </Route>
     </Routes>
 

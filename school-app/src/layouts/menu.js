@@ -15,6 +15,7 @@ export const menuItems = [
             { id: 'teachers', label: 'Profesores', to:"teachers", icon: 'fa-solid fa-chalkboard-user' },
             { id: 'enrollments', label: 'Matrículas', to:"enrollments", icon: 'fa-solid fa-file-signature' },
             { id: 'class-groups', label: 'Grupos de clase', to:"class-groups", icon: 'fa-solid fa-people-group' },
+            { id: 'classrooms', label: 'Salones', to:"classrooms", icon: 'fa-solid fa-door-open' },
         ],
     },
     {
