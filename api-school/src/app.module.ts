@@ -12,12 +12,14 @@ import { ClassroomsModule } from './academic/classrooms/classrooms.module.js';
 import { Enrollment } from './academic/enrollments/entities/enrollment.entity.js';
 import { EnrollmentsModule } from './academic/enrollments/enrollments.module.js';
 import { ClassGroup } from './academic/class-group/entities/class-group.entity.js';
+import { ClassGroupModule } from './academic/class-group/class-group.module.js';
 
 @Module({
   imports: [AcademicModule,
     TeachersModule,
     ClassroomsModule,
     EnrollmentsModule,
+    ClassGroupModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',
